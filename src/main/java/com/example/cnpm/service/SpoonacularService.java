@@ -1,18 +1,19 @@
 package com.example.cnpm.service;
 
-import com.example.cnpm.components.SpoonacularClientApi;
+import com.example.cnpm.components.SpoonacularApiClient;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SpoonacularService {
-    private final SpoonacularClientApi spoonacularClientApi;
+    private final SpoonacularApiClient spoonacularApiClient;
 
-    public SpoonacularService(SpoonacularClientApi spoonacularClientApi) {
-        this.spoonacularClientApi = spoonacularClientApi;
+    public SpoonacularService(SpoonacularApiClient spoonacularApiClient) {
+        this.spoonacularApiClient = spoonacularApiClient;
     }
 
-    public String getDishesByIngredients(String ingredients, String cuisine) {
-        return spoonacularClientApi.getDishByIngredients(ingredients, cuisine);
+    //1.1.6	Bên trong SpoonacularService, hệ thống gọi fetchDishesFromSpoonacular để truy xuất dữ liệu món ăn từ  API Spoonacular.
+    public String getDishesByIngredientsAndCuisine(String ingredients, String cuisine) {
+        return spoonacularApiClient.fetchDishesFromSpoonacular(ingredients, cuisine);
     }
 
 }

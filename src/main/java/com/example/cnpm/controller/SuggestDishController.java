@@ -13,11 +13,12 @@ public class SuggestDishController {
         this.spoonacularService = service;
     }
 
+    //1.1.5 Backend nhận request tại controller SuggestDishController, sau đó gọi phương thức getDishesByIngredientsAndCuisine trong SpoonacularService để xử lý logic.
     @GetMapping("/suggest")
     public String suggestDish(
             @RequestParam String ingredients,
             @RequestParam String cuisine
     ) {
-        return spoonacularService.getDishesByIngredients(ingredients, cuisine);
+        return spoonacularService.getDishesByIngredientsAndCuisine(ingredients, cuisine);
     }
 }
