@@ -20,37 +20,42 @@ public class FoodController {
         this.foodService = foodService;
     }
 
+    //4.1.3 Hệ thống gửi request đến backend để tìm kiếm thực phẩm
     @GetMapping("/search")
     public ResponseEntity<List<FoodDTO>> searchFoods(@RequestParam String query) {
         if (query == null || query.trim().isEmpty()) {
             return ResponseEntity.badRequest().body(new ArrayList<>());
         }
         try {
-            // Debug
             System.out.println("Controller received query: '" + query + "'");
 
+            //4.1.4 Backend gọi spoonacular API để tìm kiếm thực phẩm với từ khóa đã nhập
             List<FoodDTO> foods = foodService.searchFoods(query);
 
-            // Debug
             System.out.println("Search returned " + foods.size() + " results");
 
+            //4.1.5 Backend trả về danh sách các thực phẩm phù hợp
             return ResponseEntity.ok(foods);
         } catch (Exception e) {
             e.printStackTrace();
+            //4.2.5 Backend trả về danh sách rỗng
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<>());
         }
     }
 
-
+    //4.1.9 Hệ thống gửi request đến backend để lấy thông tin dinh dưỡng
     @GetMapping("/{id}")
     public ResponseEntity<FoodDTO> getFoodDetails(@PathVariable Long id) {
         try {
+            //4.1.10 Backend gọi api để lấy thông tin dinh dưỡng chi tiết của món ăn
             FoodDTO food = foodService.getFoodDetails(id);
-            // Debug
+
             System.out.println("Controller received food name: '" + food.getName() + "'");
             if (food != null) {
+                //4.1.11 Backend trả về thông tin dinh dưỡng chi tiết của món ăn
                 return ResponseEntity.ok(food);
             } else {
+                //4.3.11 Backend trả về không có dữ liệu dinh dưỡng
                 return ResponseEntity.notFound().build();
             }
         } catch (Exception e) {

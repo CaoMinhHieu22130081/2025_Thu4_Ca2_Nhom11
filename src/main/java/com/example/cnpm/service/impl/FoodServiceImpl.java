@@ -38,6 +38,7 @@ public class FoodServiceImpl implements FoodService {
     private String apiKey;
 
     /* ───────────────────── SEARCH  ───────────────────── */
+    //4.1.4 Backend gọi spoonacular API để tìm kiếm thực phẩm với từ khóa đã nhập
     @Override
     public List<FoodDTO> searchFoods(String keyword) {
         log.info("Search keyword received: '{}'", keyword);
@@ -52,7 +53,6 @@ public class FoodServiceImpl implements FoodService {
         log.info("URI built: {}", uri);
 
         try {
-            // Sử dụng HttpClient thay vì RestTemplate
             HttpClient client = HttpClient.newBuilder()
                     .version(HttpClient.Version.HTTP_1_1)
                     .followRedirects(HttpClient.Redirect.NORMAL)
@@ -70,7 +70,6 @@ public class FoodServiceImpl implements FoodService {
             String jsonResponse = response.body();
             log.info("Raw JSON response: {}", jsonResponse);
 
-            // Parse JSON manually
             JsonNode rootNode = mapper.readTree(jsonResponse);
             JsonNode resultsNode = rootNode.path("results");
 
@@ -84,13 +83,12 @@ public class FoodServiceImpl implements FoodService {
 
                     log.info("Found food: id={}, name='{}'", id, name);
 
-                    // Tạo FoodDTO từ kết quả tìm kiếm
                     FoodDTO food = new FoodDTO();
                     food.setId(id);
                     food.setName(name);
                     food.setImage(image);
                     food.setServing("100g");
-                    food.setCalories(100); // Giá trị mặc định
+                    food.setCalories(100);
                     food.setProtein(5);
                     food.setCarbs(20);
                     food.setFat(2);
