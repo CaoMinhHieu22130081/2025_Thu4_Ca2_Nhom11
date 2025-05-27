@@ -1,11 +1,12 @@
 package com.example.cnpm.config;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+
+import java.util.List;
 
 @Configuration
 public class CorsConfig {
@@ -15,16 +16,19 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
-        // Cho phép tất cả origins từ frontend
-        config.addAllowedOrigin("http://localhost:5173"); // Vite mặc định chạy ở cổng 5173
-        config.addAllowedOrigin("http://localhost:3000"); // React mặc định chạy ở cổng 3000
+        // Thêm các domain được phép truy cập
+        config.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "http://localhost:3000",
+                "https://2025-cnpm-nhom11-react-js.vercel.app", // thêm domain Vercel
+                "https://smartvn.id.vn"
+        ));
 
-        // Cho phép tất cả headers và methods
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
+        config.setAllowCredentials(false); // nếu không dùng cookie
 
-        source.registerCorsConfiguration("/api/**", config);
+        source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
 }
-
